@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Leitura em Rede</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Leitura em Rede</h1>
+
+    <form name="submit-to-google-sheet">
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" placeholder="Nome" required>
+        <br><br>
+
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo" required>
+            <option value="artigo">Artigo</option>
+            <option value="blog">Blog</option>
+            <option value="documento">Documento</option>
+            <option value="livro">Livro</option>
+            <option value="manual/guia">Manual/Guia</option>
+            <option value="revista/jornal">Revista/Jornal</option>
+            <option value="outro">Outro</option>
+        </select>
+        <br><br>
+
+        <label for="autor">Autor(es):</label>
+        <input type="text" id="autor" name="autor" placeholder="Autor(es)" required>
+        <br><br>
+
+        <label for="categoria">Categoria:</label>
+        <select id="categoria" name="categoria" required>
+            <option value="ficçao">Ficção</option>
+            <option value="nao-ficçao">Não Ficção</option>
+            <option value="poesia">Poesia</option>
+            <option value="drama">Drama</option>
+            <option value="quadrinho/grapich">Quadrinhos/Graphic Novels</option>
+            <option value="outro">Outro</option>
+        </select>
+        <br><br>
+
+        <label for="genero">Gênero:</label>
+        <select id="genero" name="genero" required>
+            <option value="outro">Outro</option>
+        </select>
+        <br><br>
+
+        <label for="resumo">Resumo:</label>
+        <textarea id="resumo" name="resumo" placeholder="Resumo" required></textarea>
+        <br><br>
+
+        <label for="avaliacao">Avaliação:</label>
+        <div class="rating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
+        <input type="hidden" id="avaliacao" name="avaliacao" value="0">
+        <br>
+
+        <label for="data-leitura">Data de leitura:</label>
+        <input type="date" name="data-leitura" placeholder="Data de Leitura">
+        <br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script src="script.js"></script>
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwJabZJaf09kGv4Z7Su7X37gmf1pOAdsEOFao-hHVOrJFSX6-mHpy8hmQoeC3-BdVvk/exec'
+        const form = document.forms['submit-to-google-sheet']
+        
+        form.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => console.log('Success!', response))
+        .catch(error => console.error('Error!', error.message))
+        })
+    </script>
+</body>
+</html>
