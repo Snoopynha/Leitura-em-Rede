@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const stars = document.querySelectorAll(".star");
-    const ratingInput = document.querySelector("input[name='avaliacao']");
+    const ratingInput = document.querySelector("input[name='Avaliação']");
     
     stars.forEach(star => {
         star.addEventListener("click", function () {

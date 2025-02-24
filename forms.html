@@ -10,44 +10,66 @@
 
     <form name="submit-to-google-sheet">
         <label for="nome">Nome:</label>
-        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="text" name="Nome" placeholder="Nome" required>
         <br><br>
 
         <label for="tipo">Tipo:</label>
-        <select id="tipo" name="tipo" required>
+        <select id="tipo" name="Tipo" required>
             <option value="artigo">Artigo</option>
             <option value="blog">Blog</option>
-            <option value="documento">Documento</option>
             <option value="livro">Livro</option>
-            <option value="manual/guia">Manual/Guia</option>
-            <option value="revista/jornal">Revista/Jornal</option>
+            <option value="podcast">Podcast</option>
             <option value="outro">Outro</option>
         </select>
         <br><br>
 
         <label for="autor">Autor(es):</label>
-        <input type="text" id="autor" name="autor" placeholder="Autor(es)" required>
+        <input type="text" id="autor" name="Autor(es)" placeholder="Autor(es)" required>
         <br><br>
 
-        <label for="categoria">Categoria:</label>
-        <select id="categoria" name="categoria" required>
+        <label for="categoria">Categorias:</label>
+        <select id="categoria" name="Categoria" required>
+            <option value="arte">Arte</option>
+            <option value="autoajuda">Autoajuda</option>
+            <option value="cultura">Cultura</option>
+            <option value="educacao">Educação</option>
+            <option value="entreterimento">Entreterimento</option>
             <option value="ficçao">Ficção</option>
             <option value="nao-ficçao">Não Ficção</option>
-            <option value="poesia">Poesia</option>
-            <option value="drama">Drama</option>
-            <option value="quadrinho/grapich">Quadrinhos/Graphic Novels</option>
+            <option value="lgbtq+">LGBTQ+</option>
+            <option value="moda">Moda</option>
+            <option value="negocios">Negócios</option>
+            <option value="saude-e-bem-estar">Saude e bem-estar</option>
+            <option value="sociedade">Sociedade</option>
+            <option value="tecnologia">Tecnologia</option>
             <option value="outro">Outro</option>
         </select>
         <br><br>
 
         <label for="genero">Gênero:</label>
-        <select id="genero" name="genero" required>
-            <option value="outro">Outro</option>
-        </select>
-        <br><br>
+        <input type="checkbox" name="genero" value="aventura"> Aventura <br>
+        <input type="checkbox" name="genero" value="cientifico"> Científico <br>
+        <input type="checkbox" name="genero" value="comedia"> Comédia <br>
+        <input type="checkbox" name="genero" value="discussoes"> Discussões <br>
+        <input type="checkbox" name="genero" value="drama"> Drama <br>
+        <input type="checkbox" name="genero" value="fantasia"> Fantasia <br>
+        <input type="checkbox" name="genero" value="ficcao-cientifica"> Ficção Científica <br>
+        <input type="checkbox" name="genero" value="filosofia"> Filosofia <br>
+        <input type="checkbox" name="genero" value="geografia"> Geografia <br>
+        <input type="checkbox" name="genero" value="informativo"> Informativo <br>
+        <input type="checkbox" name="genero" value="literatura"> Literatura <br>
+        <input type="checkbox" name="genero" value="matematica"> Matemática <br>
+        <input type="checkbox" name="genero" value="misterio"> Mistério <br>
+        <input type="checkbox" name="genero" value="psicologia"> Psicologia <br>
+        <input type="checkbox" name="genero" value="romance"> Romance <br>
+        <input type="checkbox" name="genero" value="terror"> Terror <br>
+        <input type="checkbox" name="genero" value="tutorial"> Tutorial <br>
+        <input type="checkbox" name="genero" value="duvidoso"> Duvidoso <br>
+        <input type="checkbox" name="genero" value="outro"> Outro <br>
+        <br>
 
         <label for="resumo">Resumo:</label>
-        <textarea id="resumo" name="resumo" placeholder="Resumo" required></textarea>
+        <textarea id="resumo" name="Resumo" placeholder="Resumo" required></textarea>
         <br><br>
 
         <label for="avaliacao">Avaliação:</label>
@@ -58,11 +80,11 @@
             <span class="star" data-value="4">★</span>
             <span class="star" data-value="5">★</span>
         </div>
-        <input type="hidden" id="avaliacao" name="avaliacao" value="0">
+        <input type="hidden" id="avaliacao" name="Avaliação" value="0">
         <br>
 
         <label for="data-leitura">Data de leitura:</label>
-        <input type="date" name="data-leitura" placeholder="Data de Leitura">
+        <input type="date" name="Data de Leitura" placeholder="Data de Leitura">
         <br><br>
 
         <button type="submit">Enviar</button>
@@ -74,14 +96,31 @@
         const form = document.forms['submit-to-google-sheet']
         
         form.addEventListener('submit', e => {
-        e.preventDefault();
-        
-        const formData = new FormData(form);
+            e.preventDefault();
+            
+            const formData = new FormData(form);
 
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => console.log('Success!', response))
-        .catch(error => console.error('Error!', error.message))
-        })
+            let generosSelecionados = [];
+            document.querySelectorAll('input[name="genero"]:checked').forEach(checkbox => {
+            generosSelecionados.push(checkbox.value);
+            });
+
+            formData.set('genero',generosSelecionados.join('; '));
+
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Servidor:', data);
+                alert('Leitura inserida!');
+            })
+            .catch(error => {
+                console.error('Erro no envio:', error);
+                alert('Leitura não foi inserida.');
+            });
+        });
     </script>
 </body>
 </html>
